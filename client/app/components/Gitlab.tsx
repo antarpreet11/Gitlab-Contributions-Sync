@@ -1,3 +1,4 @@
+'use client';
 import React from 'react'
 import TextField from '@mui/material/TextField';
 import styles from "../page.module.css";

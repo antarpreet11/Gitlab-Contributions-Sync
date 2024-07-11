@@ -1,15 +1,17 @@
+'use client'
 import styles from "./page.module.css";
 import Gitlab from "./components/Gitlab";
 import Github from "./components/Github";
 import Data from "./components/Data";
 
 export default function Home() {
+
   return (
     <main className={styles.main}>
       <div className={styles.mainDiv}>
+        <Github></Github>
         <Gitlab></Gitlab>
         <Data></Data>
-        <Github></Github>
       </div>
       <span>
         *Please note that we do not store any of your data. We only use it to generate the contributions calendar. <br />
