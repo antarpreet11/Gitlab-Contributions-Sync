@@ -50,4 +50,41 @@
   width: 35%; 
   padding: 3rem;
   justify-content: space-around;
+  align-items: center;
+}
+
+.begin {
+  background-color: rgb(195, 131, 255);
+  width: 40%;
+  padding: 1rem;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.begin:hover {
+  background-color: rgb(42, 0, 82);
+  cursor: pointer;
+  transform: translateY(-2px); 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); 
+}
+
+.disabled {
+  pointer-events: none; 
+  opacity: 0.8;
+}
+
+.domain {
+  font-size: small;
+}
+
+.docs {
+  font-size: small;
+  font-style: italic;
+}
+
+.docs:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
