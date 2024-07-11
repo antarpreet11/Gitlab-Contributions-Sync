@@ -17,6 +17,7 @@ class Gitlab {
             access_token: '',
             domain: ''
         };
+        this.userName = '';
         this.projects = [];
         this.commits = [];
     }
@@ -29,6 +30,21 @@ class Gitlab {
             throw new Error('Invalid user');
         }
         this.user = { access_token, domain };
+    }
+    getUserName() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const url = `https://${this.user.domain}/api/v4/user`;
+                const headers = {
+                    'PRIVATE-TOKEN': this.user.access_token
+                };
+                let user = yield (0, utils_1.makeRequest)({ method: 'GET', url, headers });
+                this.userName = user.username;
+            }
+            catch (err) {
+                throw new Error("Failed to get user email");
+            }
+        });
     }
     getProjects() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -58,7 +74,7 @@ class Gitlab {
     _getProjectCommits(project) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const url = `https://${this.user.domain}/api/v4/projects/${project.id}/repository/commits`;
+                const url = `https://${this.user.domain}/api/v4/projects/${project.id}/repository/commits?author=${this.userName}`;
                 const headers = {
                     'PRIVATE-TOKEN': this.user.access_token
                 };
@@ -76,7 +92,9 @@ class Gitlab {
                 id: commit.id,
                 created_at: commit.created_at,
                 message: commit.message,
-                repository: project.name
+                repository: project.name,
+                author_name: commit.author_name,
+                author_email: commit.author_email
             };
         });
     }

@@ -7,3 +7,13 @@ export interface Project {
     id: string;
     name: string;
 }
+
+export interface GitlabUser {
+    gitLabAccessToken: string;
+    gitLabDomain: string;
+};
+
+export interface GithubUser {
+    githubAccessToken: string;
+    githubRefreshToken: string;
+};

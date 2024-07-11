@@ -1,15 +1,5 @@
 import { createContext, useState, ReactNode, Dispatch, SetStateAction } from 'react';
-
-interface GitlabUser {
-    gitLabAccessToken: string;
-    gitLabDomain: string;
-};
-
-interface GithubUser {
-    githubAccessToken: string;
-    githubRefreshToken: string;
-};
-
+import { GithubUser, GitlabUser } from '../util/types';
 interface GitlabUserContextType {
     gitlabUser: GitlabUser | null;
     setGitlabUser: Dispatch<SetStateAction<GitlabUser | null>>;

@@ -4,12 +4,24 @@ import { GithubUserContext, GitlabUserContext } from '../context/userContext';
 import styles from "../page.module.css";
 import { useSocket } from '../hooks/useSocket';
 import { Project, User } from '../util/types';
+import Repositories from './Repositories';
+import Buttons from './Buttons';
 
 const Data = () => {
   const { githubUser } = useContext(GithubUserContext);
   const { gitlabUser } = useContext(GitlabUserContext);
 
   const [projects, setProjects] = useState<Project[]>([]);
+  const [commits, setCommits] = useState<number>(0);
+  const [selectedProjects, setSelectedProjects] = useState<Project[]>([]);
+
+  const toggleProjectSelection = (project: Project) => {
+    setSelectedProjects(prev => 
+      prev.find(p => p.id === project.id) 
+        ? prev.filter(p => p.id !== project.id) 
+        : [...prev, project]
+    );
+  };
 
   const [data, setData] = useState<boolean>(false);
   const socket = useSocket();
@@ -32,6 +44,10 @@ const Data = () => {
           case 'GITLAB_PROJECTS':
             setProjects(res.data);
             break;
+          case 'GITLAB_COMMITS':
+            // console.log('Commits: ' + res.data.length);
+            setCommits(res.data.length);
+            break;
           default:
             break;
         }
@@ -39,8 +55,8 @@ const Data = () => {
     }
   }, [socket]);
 
-  console.log("Data -> githubUser", githubUser);
-  console.log("Data -> gitlabUser", gitlabUser);
+  // console.log("Data -> githubUser", githubUser);
+  // console.log("Data -> gitlabUser", gitlabUser);
 
   return (
     <div className={styles.data}>
@@ -49,29 +65,13 @@ const Data = () => {
           <div>Connecting...</div>
         ) : (
           <>
-            <div className={`${styles.begin} ${!data ? styles.disabled : ''}`} 
-              onClick={() => {
-                socket.send(JSON.stringify({
-                  type: 'GITLAB_INIT',
-                  data: {
-                    access_token: gitlabUser?.gitLabAccessToken,
-                    domain: gitlabUser?.gitLabDomain
-                  } as User
-                }));
-              }}>
-                Begin
-            </div>
-            <div>
-              {
-                projects.map((project: Project) => {
-                  return (
-                    <div key={project.id} className={styles.project}>
-                      <div>{project.name}</div>
-                    </div>
-                  )
-                })
-              }
-            </div>
+            <Buttons socket={socket} gitlabUser={gitlabUser} data={data} projects={projects} selectedProjects={selectedProjects}></Buttons>
+            <Repositories projects={projects} selectedProjects={selectedProjects} toggleProjectSelection={toggleProjectSelection}></Repositories>
+            {
+              commits ? (
+                <div>No of commits: {commits}</div>
+              ) : null
+            }
           </>
           )
       }

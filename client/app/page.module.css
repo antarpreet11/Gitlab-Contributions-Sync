@@ -88,3 +88,37 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+.repoList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 0.5rem; /* Optional: add some padding */
+  box-sizing: border-box; /* Ensure padding is included in width/height */
+}
+
+.repo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1rem;
+  background-color: black;
+  margin-bottom: 0.1rem; /* Add some space between items */
+}
+
+.repo input[type="checkbox"] {
+  margin-right: 1rem; /* Adjust spacing between checkbox and text */
+}
+
+.repo label {
+  display: flex;
+  align-items: center;
+  width: 100%; /* Ensure the entire area is clickable */
+  cursor: pointer;
+}
+
+.repo label span {
+  flex: 1; /* Expand to take remaining space */
+}

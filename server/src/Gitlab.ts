@@ -15,18 +15,22 @@ interface Commit {
     created_at: string;
     message: string;
     repository: string;
+    author_name: string;
+    author_email: string;
 }
 
 export class Gitlab {
     private user: User;
     projects: Project[];
     commits: Commit[];
+    userName: string;
 
     constructor() {
         this.user = {
             access_token: '',
             domain: ''
         };
+        this.userName = '';
 
         this.projects = [];
         this.commits = [];
@@ -42,6 +46,19 @@ export class Gitlab {
         }
 
         this.user = { access_token, domain };
+    }
+
+    async getUserName(): Promise<any> {
+        try {
+            const url = `https://${this.user.domain}/api/v4/user`;
+            const headers = {
+                'PRIVATE-TOKEN': this.user.access_token
+            };
+            let user = await makeRequest({ method: 'GET', url, headers });
+            this.userName = user.username;
+        } catch (err) {
+            throw new Error("Failed to get user email");
+        }
     }
 
     async getProjects(): Promise<any> {
@@ -71,7 +88,7 @@ export class Gitlab {
 
     async _getProjectCommits(project: Project): Promise<any> {
         try {
-            const url = `https://${this.user.domain}/api/v4/projects/${project.id}/repository/commits`;
+            const url = `https://${this.user.domain}/api/v4/projects/${project.id}/repository/commits?author=${this.userName}`;
             const headers = {
                 'PRIVATE-TOKEN': this.user.access_token
             };
@@ -87,7 +104,9 @@ export class Gitlab {
                 id: commit.id,
                 created_at: commit.created_at,
                 message: commit.message,
-                repository: project.name
+                repository: project.name,
+                author_name: commit.author_name,
+                author_email: commit.author_email
             };
         });
     }
