@@ -58,14 +58,20 @@ const Data = () => {
   }, [socket]);
 
   useEffect(() => {
-    if (commits !== null) {
-      if (commits > 0) {
-        setDisplayMessage(`Commits found: ${commits}`);
+    if (data) {
+      if (commits !== null) {
+        if (commits > 0) {
+          setDisplayMessage(`Commits found: ${commits}`);
+        } else {
+          setDisplayMessage('No commits found');
+        }
       } else {
-        setDisplayMessage('No commits found');
+        setDisplayMessage('');
       }
+    } else {
+      setDisplayMessage('Enter Gitlab credentials & Sign in with Github to begin');
     }
-  }, [commits]);
+  }, [commits, data]);
 
   // console.log("Data -> githubUser", githubUser);
   // console.log("Data -> gitlabUser", gitlabUser);

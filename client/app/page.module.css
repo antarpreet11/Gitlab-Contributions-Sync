@@ -5,11 +5,12 @@
   justify-content: center;
   gap: 2rem;
   height: 100vh;
+  padding: 0 5%;
 }
 
 .mainDiv {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   height: 50%;
   width: 100%;
@@ -121,4 +122,25 @@
 
 .repo label span {
   flex: 1; /* Expand to take remaining space */
+}
+
+.linkContainer {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.githubLink {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border:rgb(255, 255, 255) solid 1px;
+}
+
+.linkText {
+  color: white;
+  text-decoration: none;
+  font-size: 2rem;
+  padding: 0 0.5rem;
 }

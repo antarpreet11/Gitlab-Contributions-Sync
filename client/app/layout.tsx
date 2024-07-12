@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Gitlab the Github",
+  title: "Gitlab to Gihub Sync",
   description: "Import contributions calendar from Gitlab to Github",
 };
 
