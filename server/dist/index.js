@@ -22,37 +22,6 @@ wss.on('connection', function connection(ws) {
                 gitlab.setUser(message.data);
                 yield gitlab.getUserName();
                 const projects = yield gitlab.getProjects();
-                // const projects = [{
-                //     id: 1,
-                //     name: 'Project 1'
-                // }, {
-                //     id: 2,
-                //     name: 'Project 2'
-                // }, {
-                //     id: 3,
-                //     name: 'Project 3'
-                // }, {
-                //     id: 4,
-                //     name: 'Project 4'
-                // }, {
-                //     id: 5,
-                //     name: 'Project 5'
-                // }, {    
-                //     id: 6,
-                //     name: 'Project 6'
-                // }, {
-                //     id: 7,
-                //     name: 'Project 7'
-                // }, {
-                //     id: 8,
-                //     name: 'Project 8'
-                // }, {
-                //     id: 9,
-                //     name: 'Project 9'
-                // }, {
-                //     id: 10,
-                //     name: 'Project 10'
-                // }]
                 ws.send(JSON.stringify({ type: 'GITLAB_PROJECTS', data: projects }));
             }
             catch (error) {
@@ -61,6 +30,9 @@ wss.on('connection', function connection(ws) {
         }
         else if (message.type === 'GITLAB_GET_COMMITS') {
             try {
+                if (!gitlab.userName) {
+                    throw new Error('User not initialized');
+                }
                 const projects = message.data.projects;
                 const commits = yield gitlab.getAllUserCommits(projects);
                 ws.send(JSON.stringify({ type: 'GITLAB_COMMITS', data: commits }));

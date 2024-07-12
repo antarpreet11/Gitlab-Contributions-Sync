@@ -12,8 +12,9 @@ const Data = () => {
   const { gitlabUser } = useContext(GitlabUserContext);
 
   const [projects, setProjects] = useState<Project[]>([]);
-  const [commits, setCommits] = useState<number>(0);
+  const [commits, setCommits] = useState<number | null>(null);
   const [selectedProjects, setSelectedProjects] = useState<Project[]>([]);
+  const [displayMessage, setDisplayMessage] = useState<string>('');
 
   const toggleProjectSelection = (project: Project) => {
     setSelectedProjects(prev => 
@@ -40,6 +41,7 @@ const Data = () => {
     if (socket) {
       socket.onmessage = (event) => {
         let res = JSON.parse(event.data);
+
         switch (res.type) {
           case 'GITLAB_PROJECTS':
             setProjects(res.data);
@@ -55,8 +57,19 @@ const Data = () => {
     }
   }, [socket]);
 
+  useEffect(() => {
+    if (commits !== null) {
+      if (commits > 0) {
+        setDisplayMessage(`Commits found: ${commits}`);
+      } else {
+        setDisplayMessage('No commits found');
+      }
+    }
+  }, [commits]);
+
   // console.log("Data -> githubUser", githubUser);
   // console.log("Data -> gitlabUser", gitlabUser);
+  // console.log(selectedProjects);
 
   return (
     <div className={styles.data}>
@@ -68,9 +81,7 @@ const Data = () => {
             <Buttons socket={socket} gitlabUser={gitlabUser} data={data} projects={projects} selectedProjects={selectedProjects}></Buttons>
             <Repositories projects={projects} selectedProjects={selectedProjects} toggleProjectSelection={toggleProjectSelection}></Repositories>
             {
-              commits ? (
-                <div>No of commits: {commits}</div>
-              ) : null
+              displayMessage && <div>{displayMessage}</div>
             }
           </>
           )

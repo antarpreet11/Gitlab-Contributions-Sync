@@ -41,7 +41,7 @@ const Buttons = ({socket, data, gitlabUser, projects, selectedProjects}: Buttons
                 (
                     <div className={`${styles.begin} ${!data ? styles.disabled : ''}`} 
                         onClick={() => beginHandler(socket, gitlabUser)}>
-                        Begin
+                        Get Repos
                     </div>
                 )
             }
