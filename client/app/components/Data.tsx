@@ -44,11 +44,17 @@ const Data = () => {
 
         switch (res.type) {
           case 'GITLAB_PROJECTS':
+            localStorage.setItem('gitlabDomain', gitlabUser?.gitLabDomain || '');
+            localStorage.setItem('gitlabAccessToken', gitlabUser?.gitLabAccessToken || '');
             setProjects(res.data);
             break;
           case 'GITLAB_COMMITS':
             // console.log('Commits: ' + res.data.length);
             setCommits(res.data.length);
+            break;
+          case 'ERROR':
+            console.log('Error: ' + res.data);
+            setDisplayMessage(res.data);
             break;
           default:
             break;

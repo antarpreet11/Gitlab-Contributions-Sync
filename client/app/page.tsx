@@ -23,9 +23,9 @@ export default function Home() {
             </a> 
           </div>
           <div className={styles.mainDiv}>
+            <Github></Github>
             <Gitlab></Gitlab>
             <Data></Data>
-            <Github></Github>
           </div>
           <span>
             *Please note that we do not store any data. We do however use local storage on your browser. <br />

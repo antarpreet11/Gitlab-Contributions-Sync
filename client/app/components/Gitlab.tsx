@@ -11,14 +11,12 @@ const Gitlab = () => {
   const handleDomainChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (gitlabUser) {
       setGitlabUser({ ...gitlabUser, gitLabDomain: e.target.value });
-      localStorage.setItem('gitlabDomain', e.target.value);
     }
   }
 
   const handleAccessTokenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (gitlabUser) {
       setGitlabUser({ ...gitlabUser, gitLabAccessToken: e.target.value });
-      localStorage.setItem('gitlabAccessToken', e.target.value);
     }
   }
 
