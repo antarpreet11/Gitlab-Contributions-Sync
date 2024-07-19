@@ -38,6 +38,13 @@ To use the GitLab to GitHub Contributions Sync web app, follow these steps:
 
 Contributions are welcome! If you find any bugs or have suggestions for improvements, please open an issue or submit a pull request.
 
+## TODO (Personal Note)
+
+- Fix the Github SignIn State Issue
+- Allow Github Personal Access Token instead of App Auth
+- Improve Updates Logging in Data.tsx
+- Test more scenarios
+
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
