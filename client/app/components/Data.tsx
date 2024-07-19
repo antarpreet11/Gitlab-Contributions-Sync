@@ -27,6 +27,12 @@ const Data = () => {
   const [data, setData] = useState<boolean>(false);
   const socket = useSocket();
 
+  const githubInit = () => {
+    if (socket && githubUser) {
+      socket.send(JSON.stringify({ type: 'GITHUB_INIT', data: githubUser }));
+    }
+  };
+
   useEffect(() => {
     if (githubUser?.githubAccessToken !== '' 
       && githubUser?.githubRefreshToken !== ''
@@ -50,12 +56,27 @@ const Data = () => {
             break;
           case 'GITLAB_COMMITS':
             // console.log('Commits: ' + res.data.length);
-            setCommits(res.data.length);
+            let c = 0;
+            for (let i = 0; i < res.data.length; i++) {
+              c += res.data[i].commits.length;
+            }
+            setCommits(c);
+            if (c > 0) {
+
+              githubInit();
+            }
+            break;
+          case 'GITHUB_INIT':
+            console.log(res);
+            break;
+          case 'UPDATE':
+            console.log(res);
+            setDisplayMessage(prev => prev + '\n' + res.data);
             break;
           case 'ERROR':
             console.log('Error: ' + res.data);
             setDisplayMessage(res.data);
-            break;
+            break;  
           default:
             break;
         }

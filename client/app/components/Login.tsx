@@ -9,7 +9,9 @@ export const LoginButton = () => {
   const callbackUrl = process.env.NEXT_PUBLIC_GITHUB_CALLBACK_URL || '';
 
   const handleLogin = () => {
-    window.location.href = `${githubUrl}/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(callbackUrl)}`;
+
+    window.location.href = `${githubUrl}/apps/Gitlab-Contibutions-Sync/installations/new?client_id=${clientId}`;
+     // window.location.href = `${githubUrl}/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(callbackUrl)}`;
   };
 
   return (

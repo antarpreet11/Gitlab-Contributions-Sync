@@ -13,7 +13,7 @@ export async function GET(req: Request) {
         redirect('/');
     }
 
-    const response = await axios.post(`${GITHUB_API_URL}/access_token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code=${code}`);
+    const response = await axios.post(`${GITHUB_API_URL}/login/oauth/access_token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code=${code}`);
     const data = response.data;
     const params = new URLSearchParams(data);
 

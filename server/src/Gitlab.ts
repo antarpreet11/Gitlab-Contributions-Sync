@@ -19,10 +19,15 @@ interface Commit {
     author_email: string;
 }
 
+interface RepoCommits {
+    project: Project;
+    commits: Commit[];
+}
+
 export class Gitlab {
     private user: User;
     projects: Project[];
-    commits: Commit[];
+    repoCommits: RepoCommits[];
     userName: string;
 
     constructor() {
@@ -33,7 +38,7 @@ export class Gitlab {
         this.userName = '';
 
         this.projects = [];
-        this.commits = [];
+        this.repoCommits = [];
     }
     
     setUser(user: User) {
@@ -111,12 +116,15 @@ export class Gitlab {
         });
     }
 
-    async getAllUserCommits(selectedProjects: Project[]): Promise<any> {
-        let commits: Commit[] = [];
+    async getAllUserCommits(selectedProjects: Project[]): Promise<RepoCommits[]> {
+        let rep: RepoCommits[] = [];
         for (let project of selectedProjects) {
-            commits = commits.concat(await this._getProjectCommits(project));
+            rep.push({
+                project: project,
+                commits: await this._getProjectCommits(project)
+            });
         }
-        this.commits = commits;
-        return commits;
+        this.repoCommits = rep;
+        return this.repoCommits;
     }
 }
