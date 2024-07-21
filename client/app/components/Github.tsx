@@ -1,12 +1,12 @@
 'use client';
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { GithubUserContext } from '../context/userContext';
 import styles from "../page.module.css";
 import Typography from '@mui/material/Typography';
 import Login from './Login';
 
-const Github = () => {
+const GithubContent = () => {
   const { githubUser, setGithubUser } = useContext(GithubUserContext);
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -38,7 +38,15 @@ const Github = () => {
           )
         }
     </div>
-  )
+  );
 }
 
-export default Github
+const Github = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <GithubContent />
+    </Suspense>
+  );
+}
+
+export default Github;

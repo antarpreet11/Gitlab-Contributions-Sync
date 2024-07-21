@@ -71,7 +71,7 @@ const Data = () => {
             break;
           case 'UPDATE':
             console.log(res);
-            setDisplayMessage(prev => prev + '\n' + res.data);
+            setDisplayMessage(prev => prev + '<br />' + res.data);
             break;
           case 'ERROR':
             console.log('Error: ' + res.data);
@@ -113,9 +113,8 @@ const Data = () => {
           <>
             <Buttons socket={socket} gitlabUser={gitlabUser} data={data} projects={projects} selectedProjects={selectedProjects}></Buttons>
             <Repositories projects={projects} selectedProjects={selectedProjects} toggleProjectSelection={toggleProjectSelection}></Repositories>
-            {
-              displayMessage && <div>{displayMessage}</div>
-            }
+            <div dangerouslySetInnerHTML={{ __html: displayMessage ?  displayMessage : '' }} className={styles.updateDisplayBox}>
+            </div>
           </>
           )
       }

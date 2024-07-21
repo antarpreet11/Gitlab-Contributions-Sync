@@ -144,3 +144,10 @@
   font-size: 2rem;
   padding: 0 0.5rem;
 }
+
+.updateDisplayBox {
+  height: 50%;
+  width: 100%;
+  overflow-y: auto; /* Creates a vertical scrollbar if needed */
+  box-sizing: border-box; /* Ensures padding and border are included in the height */
+}
