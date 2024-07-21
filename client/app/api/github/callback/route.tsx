@@ -1,8 +1,8 @@
 import { redirect } from 'next/navigation';
 import axios from 'axios';
-const GITHUB_API_URL = process.env.NEXT_GITHUB_URL;
-const CLIENT_ID = process.env.NEXT_GITHUB_CLIENT_ID;
-const CLIENT_SECRET = process.env.NEXT_GITHUB_CLIENT_SECRET;
+const GITHUB_API_URL = process.env.NEXT_PUBLIC_GITHUB_URL;
+const CLIENT_ID = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
+const CLIENT_SECRET = process.env.NEXT_PUBLIC_GITHUB_CLIENT_SECRET;
 
 export async function GET(req: Request) {
     const url = new URL(req.url);
