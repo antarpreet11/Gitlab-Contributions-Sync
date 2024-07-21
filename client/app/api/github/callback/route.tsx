@@ -7,7 +7,7 @@ const CLIENT_SECRET = process.env.NEXT_PUBLIC_GITHUB_CLIENT_SECRET;
 export async function GET(req: Request) {
     const url = new URL(req.url);
     const code = url.searchParams.get('code');
-    console.log('code:', code);
+    console.log('code:', code); 
 
     if (!code) {
         redirect('/');
