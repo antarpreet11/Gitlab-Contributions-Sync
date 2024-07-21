@@ -8,7 +8,7 @@ export const useSocket = () => {
 
     useEffect(() => {
         const ws = new WebSocket(WS_URL);
-
+ 
         ws.onopen = () => {
             setSocket(ws);      
         };
