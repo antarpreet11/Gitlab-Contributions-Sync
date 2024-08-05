@@ -42,6 +42,7 @@ Contributions are welcome! If you find any bugs or have suggestions for improvem
 
 - Fix the Github SignIn State Issue
 - Allow Github Personal Access Token instead of App Auth
+- Fix Local Storage issue on Prod
 - Improve Updates Logging in Data.tsx
 - Test more scenarios
 
