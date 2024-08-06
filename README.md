@@ -16,7 +16,7 @@ To use the GitLab to GitHub Contributions Sync web app, follow these steps:
 
 1. **Access the Application**
 
-   Open the web application in your browser. (Provide the deployment URL here.)
+   Open the web application in your browser. [Here](https://gitlab-sync.vercel.app/)
 
 2. **Sign in to GitHub**
 
@@ -42,6 +42,7 @@ Contributions are welcome! If you find any bugs or have suggestions for improvem
 
 - Fix the Github SignIn State Issue
 - Allow Github Personal Access Token instead of App Auth
+- Fix Local Storage issue on Prod
 - Improve Updates Logging in Data.tsx
 - Test more scenarios
 
