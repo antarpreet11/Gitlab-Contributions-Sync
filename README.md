@@ -4,11 +4,11 @@ This Next.js web app automates the synchronization of contributions from GitLab 
 
 ## Features
 
-- **GitHub Authentication**: Sign in to GitHub to authorize the synchronization.
-- **GitLab Credentials**: Provide GitLab organization domain URL and personal access token for authentication.
-- **Repository Selection**: Choose GitLab repositories whose contributions you want to sync.
-- **Commit Synchronization**: Mirror commit times and hashes from GitLab to a dummy GitHub repository.
-- **Incremental Sync**: Automatically updates the dummy GitHub repository with new commits from GitLab.
+- **GitHub Authentication**: Sign in to GitHub to authorize the synchronization
+- **GitLab Credentials**: Provide GitLab organization domain URL and personal access token for authentication
+- **Repository Selection**: Choose GitLab repositories whose contributions you want to sync
+- **Commit Synchronization**: Mirror commit times and hashes from GitLab to a dummy GitHub repository
+- **Incremental Sync**: Automatically updates the dummy GitHub repository with new commits from GitLab
 
 ## Usage
 
