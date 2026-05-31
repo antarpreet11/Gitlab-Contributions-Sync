@@ -1,20 +1,13 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-async function _logRequestError(error: any): Promise<void> {
-    // Prints the failed status and its url
-    let msg: string;
-
-    // If failed response includes a message append it
-    if (error.response && error.response.data && error.response.data.message) {
+function _logRequestError(error: any): void {
+    let msg = "";
+    if (error.response?.data?.message) {
         msg = `:\n    "${error.response.data.message}"`;
-    } else {
-        msg = "";
     }
-
-    console.log(
-        `Request to \x1b[32m${error.config.url}\x1b[0m ` +
-        `failed with status \x1b[33m${error.response.status}\x1b[0m${msg}`
-    );
+    const status = error.response?.status ?? 'no response';
+    const url = error.config?.url ?? 'unknown url';
+    console.log(`Request to \x1b[32m${url}\x1b[0m failed with status \x1b[33m${status}\x1b[0m${msg}`);
 }
 
 interface RequestOptions {
@@ -25,33 +18,25 @@ interface RequestOptions {
 }
 
 interface ResponseData {
-    ok: boolean;
     [key: string]: any;
 }
 
 async function makeRequest({ method, url, headers, body }: RequestOptions): Promise<ResponseData> {
     const config: AxiosRequestConfig = {
-        method: method,
-        url: url,
-        headers: headers,
+        method,
+        url,
+        headers,
         data: body
     };
 
     try {
         const response: AxiosResponse = await axios(config);
-
-        if (response.status >= 200 && response.status < 300) {
-            const data: ResponseData = response.data;
-            data.ok = true;
-            return data;
-        } else {
-            await _logRequestError({ config, response });
-            return { ok: false };
-        }
-    } catch (error) {
-        console.error(error);
-        await _logRequestError(error);
-        return { ok: false };
+        return response.data;
+    } catch (error: any) {
+        _logRequestError(error);
+        const status = error.response?.status;
+        const message = error.response?.data?.message ?? error.message ?? 'Unknown error';
+        throw new Error(`${status ? `HTTP ${status}: ` : ''}${message}`);
     }
 }
 
