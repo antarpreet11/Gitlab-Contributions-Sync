@@ -15,8 +15,9 @@ const beginHandler = (socket: WebSocket, gitlabUser: GitlabUser | null) => {
         type: 'GITLAB_INIT',
         data: {
             access_token: gitlabUser?.gitLabAccessToken,
-            domain: gitlabUser?.gitLabDomain
-        } as User
+            domain: gitlabUser?.gitLabDomain,
+            author_email: gitlabUser?.gitLabAuthorEmail || ''
+        }
     }));
 };
 

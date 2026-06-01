@@ -17,10 +17,16 @@ const Data = () => {
   const [displayMessage, setDisplayMessage] = useState<string>('');
 
   const toggleProjectSelection = (project: Project) => {
-    setSelectedProjects(prev => 
-      prev.find(p => p.id === project.id) 
-        ? prev.filter(p => p.id !== project.id) 
-        : [...prev, project]
+    setSelectedProjects(prev =>
+      prev.find(p => p.id === project.id)
+        ? prev.filter(p => p.id !== project.id)
+        : [...prev, { ...project, selectedBranch: project.default_branch }]
+    );
+  };
+
+  const updateProjectBranch = (projectId: string, branch: string) => {
+    setSelectedProjects(prev =>
+      prev.map(p => p.id === projectId ? { ...p, selectedBranch: branch } : p)
     );
   };
 
@@ -52,6 +58,7 @@ const Data = () => {
           case 'GITLAB_PROJECTS':
             localStorage.setItem('gitlabDomain', gitlabUser?.gitLabDomain || '');
             localStorage.setItem('gitlabAccessToken', gitlabUser?.gitLabAccessToken || '');
+            localStorage.setItem('gitlabAuthorEmail', gitlabUser?.gitLabAuthorEmail || '');
             setProjects(res.data);
             break;
           case 'GITLAB_COMMITS':
@@ -112,7 +119,7 @@ const Data = () => {
         ) : (
           <>
             <Buttons socket={socket} gitlabUser={gitlabUser} data={data} projects={projects} selectedProjects={selectedProjects}></Buttons>
-            <Repositories projects={projects} selectedProjects={selectedProjects} toggleProjectSelection={toggleProjectSelection}></Repositories>
+            <Repositories projects={projects} selectedProjects={selectedProjects} toggleProjectSelection={toggleProjectSelection} updateProjectBranch={updateProjectBranch}></Repositories>
             <div dangerouslySetInnerHTML={{ __html: displayMessage ?  displayMessage : '' }} className={styles.updateDisplayBox}>
             </div>
           </>

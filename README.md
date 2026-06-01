@@ -4,11 +4,11 @@ This Next.js web app automates the synchronization of contributions from GitLab 
 
 ## Features
 
-- **GitHub Authentication**: Sign in to GitHub to authorize the synchronization.
-- **GitLab Credentials**: Provide GitLab organization domain URL and personal access token for authentication.
-- **Repository Selection**: Choose GitLab repositories whose contributions you want to sync.
-- **Commit Synchronization**: Mirror commit times and hashes from GitLab to a dummy GitHub repository.
-- **Incremental Sync**: Automatically updates the dummy GitHub repository with new commits from GitLab.
+- **GitHub Authentication**: Sign in to GitHub to authorize the synchronization
+- **GitLab Credentials**: Provide GitLab organization domain URL and personal access token for authentication
+- **Repository Selection**: Choose GitLab repositories whose contributions you want to sync
+- **Commit Synchronization**: Mirror commit times and hashes from GitLab to a dummy GitHub repository
+- **Incremental Sync**: Automatically updates the dummy GitHub repository with new commits from GitLab
 
 ## Usage
 
@@ -16,7 +16,7 @@ To use the GitLab to GitHub Contributions Sync web app, follow these steps:
 
 1. **Access the Application**
 
-   Open the web application in your browser. (Provide the deployment URL here.)
+   Open the web application in your browser. [Here](https://gitlab-sync.vercel.app/)
 
 2. **Sign in to GitHub**
 
@@ -40,8 +40,8 @@ Contributions are welcome! If you find any bugs or have suggestions for improvem
 
 ## TODO (Personal Note)
 
-- Fix the Github SignIn State Issue
 - Allow Github Personal Access Token instead of App Auth
+- Fix Local Storage issue on Prod
 - Improve Updates Logging in Data.tsx
 - Test more scenarios
 

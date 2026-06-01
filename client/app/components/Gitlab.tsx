@@ -20,16 +20,29 @@ const Gitlab = () => {
     }
   }
 
+  const handleAuthorEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (gitlabUser) {
+      setGitlabUser({ ...gitlabUser, gitLabAuthorEmail: e.target.value });
+    }
+  }
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       if (localStorage.getItem('gitlabDomain') && localStorage.getItem('gitlabAccessToken')) {
         setGitlabUser({
           gitLabAccessToken: localStorage.getItem('gitlabAccessToken') || '',
           gitLabDomain: localStorage.getItem('gitlabDomain') || '',
+          gitLabAuthorEmail: localStorage.getItem('gitlabAuthorEmail') || '',
         });
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (gitlabUser?.gitLabAuthorEmail !== undefined) {
+      localStorage.setItem('gitlabAuthorEmail', gitlabUser.gitLabAuthorEmail || '');
+    }
+  }, [gitlabUser?.gitLabAuthorEmail]);
 
   return (
     <div className={styles.gitlab}>
@@ -42,16 +55,24 @@ const Gitlab = () => {
           onChange={handleDomainChange}
         />
         <div className={styles.domain}>*Example: git.xyzuniversity.com</div>     
-        <TextField 
-          id="outlined-required" 
-          label="Personal Access Token" 
+        <TextField
+          id="outlined-required"
+          label="Personal Access Token"
           variant="outlined"
           value={gitlabUser?.gitLabAccessToken}
-          onChange={handleAccessTokenChange} 
+          onChange={handleAccessTokenChange}
         />
         <div className={styles.docs} onClick={ () => {
           window.open('https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html', '_blank');
         }}>*Documentation on Personal Access Tokens</div>
+        <TextField
+          id="outlined-author-email"
+          label="Author Email Override (optional)"
+          variant="outlined"
+          value={gitlabUser?.gitLabAuthorEmail || ''}
+          onChange={handleAuthorEmailChange}
+        />
+        <div className={styles.domain}>*Use if your git commit email differs from your GitLab account email</div>
     </div>
   )
 };

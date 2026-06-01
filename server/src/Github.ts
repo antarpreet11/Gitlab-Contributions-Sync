@@ -81,7 +81,7 @@ export class Github {
 
     async _initShadowRepo() {
         try {
-            console.log("Creating GitHub shadow repo...");
+            console.log(`\x1b[35m[GitHub]\x1b[0m creating shadow repo \x1b[32m${this.repo}\x1b[0m`);
             this.ws.send(JSON.stringify({ type: 'UPDATE', data: "Creating GitHub shadow repo..." }));
     
             await this.api.createRepo(
@@ -161,44 +161,46 @@ export class Github {
     }
 
     async _mkOrUpdateShadow(repoName: string, commits: GLCommit[], content: string) {
-        // Commit Bitbucket commit-hashes one by one to GitHub shadow files
         let commitsAdded = 0;
+        let cachedHead: { commitSha: string; treeSha: string } | null = null;
 
-        let contentArray;
+        const existingIds = new Set(content.split('\n').filter(Boolean));
 
-        for (let ii = 0; ii < commits.length; ii++) {
-            const commit = commits[ii];
-
-            // Convert lines in str to array for easier handling
-            contentArray = content.split('\n')
-
-            // Check that the Bitbucket hash is not already in the shadow file
-            if (!contentArray.includes(commit.id)) {
-                contentArray.push(commit.id)
-
-                content = contentArray.join('\n').trim();
-
-                // Commit
-                await this._commitShadow(repoName, content, commit.created_at);
+        for (const commit of commits) {
+            if (!existingIds.has(commit.id)) {
+                existingIds.add(commit.id);
+                content = [...existingIds].join('\n');
+                cachedHead = await this._commitShadow(repoName, content, commit.created_at, cachedHead);
                 commitsAdded += 1;
             }
         }
 
-        // Print msg: "- Added X commits from [REPO/SHADOW NAME]"
-        console.log(
-            `- Added \x1b[33m${commitsAdded}\x1b[0m commits`
-        ); 
+        console.log(`\x1b[35m[GitHub]\x1b[0m added \x1b[33m${commitsAdded}\x1b[0m new commit(s)`);
         this.ws.send(JSON.stringify({ type: 'UPDATE', data: `Added ${commitsAdded} commits`}));
     }
 
-    async _commitShadow(filename: string, content: any, date: string) {
+    async _commitShadow(
+        filename: string,
+        content: any,
+        date: string,
+        cachedHead?: { commitSha: string; treeSha: string } | null
+    ): Promise<{ commitSha: string; treeSha: string }> {
+        let headSha: string;
+        let baseTreeSha: string;
 
-        const head = await this.api.getLatestCommit(this.user.owner, this.repo, "main");
+        if (cachedHead) {
+            headSha = cachedHead.commitSha;
+            baseTreeSha = cachedHead.treeSha;
+        } else {
+            const head = await this.api.getLatestCommit(this.user.owner, this.repo, "main");
+            headSha = head.sha;
+            baseTreeSha = head.commit.tree.sha;
+        }
 
         const tree = await this.api.modifyTree(
             this.user.owner,
             this.repo,
-            head.commit.tree.sha,
+            baseTreeSha,
             [{
                 path: filename,
                 mode: "100644",
@@ -210,15 +212,29 @@ export class Github {
         const commit = await this.api.createCommit(this.user.owner, this.repo, {
             message: `Update ${filename}`,
             tree: tree.sha,
-            parents: [head.sha],
+            parents: [headSha],
             author: {
                 name: this.user.username,
                 email: this.user.mail,
                 date: date
             }
-        })
+        });
 
         await this.api.updateRef(this.user.owner, this.repo, "main", commit.sha);
+
+        return { commitSha: commit.sha, treeSha: tree.sha };
+    }
+
+    async getLastSyncDate(repoName: string): Promise<string | null> {
+        try {
+            const commits = await this.api.getFileCommits(this.user.owner, this.repo, repoName);
+            if (commits && commits.length > 0) {
+                return commits[0].commit.author.date;
+            }
+            return null;
+        } catch {
+            return null;
+        }
     }
 
     async sync() {
@@ -227,7 +243,7 @@ export class Github {
                 const repoName = this.repoCommits[i].project; 
                 const commits = this.repoCommits[i].commits;
     
-                console.log(`Syncing \x1b[32m${repoName.name}\x1b[0m (${i + 1}/${this.repoCommits.length})`);
+                console.log(`\x1b[35m[GitHub]\x1b[0m syncing \x1b[32m${repoName.name}\x1b[0m (${i + 1}/${this.repoCommits.length})`);
                 this.ws.send(JSON.stringify({ type: 'UPDATE', data: `Syncing ${repoName.name} (${i + 1}/${this.repoCommits.length})`}));
     
                 const content = await this._getOrInitShadowContent(repoName);

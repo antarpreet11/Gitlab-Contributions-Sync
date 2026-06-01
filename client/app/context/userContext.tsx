@@ -32,6 +32,7 @@ export const GitlabUserProvider = ({ children }: GitlabUserProviderProps) => {
     const [gitlabUser, setGitlabUser] = useState<GitlabUser | null>({
         gitLabAccessToken: '',
         gitLabDomain: '',
+        gitLabAuthorEmail: '',
     });
     const value = { gitlabUser, setGitlabUser };
 

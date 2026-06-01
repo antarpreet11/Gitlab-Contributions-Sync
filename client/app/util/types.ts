@@ -6,11 +6,14 @@ export interface User {
 export interface Project {
     id: string;
     name: string;
+    default_branch: string;
+    selectedBranch?: string;
 }
 
 export interface GitlabUser {
     gitLabAccessToken: string;
     gitLabDomain: string;
+    gitLabAuthorEmail?: string;
 };
 
 export interface GithubUser {
