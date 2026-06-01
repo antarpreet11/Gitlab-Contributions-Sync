@@ -122,4 +122,13 @@ export class GithubAPI {
             force: force
         }});
     }
+
+    async getFileCommits(owner: string, repo: string, path: string): Promise<any[]> {
+        try {
+            const url = `${API_URL}/repos/${owner}/${repo}/commits?path=${encodeURIComponent(path)}&per_page=1`;
+            return await makeRequest({ method: 'GET', url, headers: this.headers });
+        } catch (err) {
+            throw new Error("Failed to get file commits");
+        }
+    }
 }

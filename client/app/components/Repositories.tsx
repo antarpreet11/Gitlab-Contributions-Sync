@@ -6,13 +6,15 @@ interface RepositoriesProps {
     projects: Project[];
     selectedProjects: Project[];
     toggleProjectSelection: (project: Project) => void;
+    updateProjectBranch: (projectId: string, branch: string) => void;
 }
 
-const Repositories = ({ projects, selectedProjects, toggleProjectSelection }: RepositoriesProps) => {
+const Repositories = ({ projects, selectedProjects, toggleProjectSelection, updateProjectBranch }: RepositoriesProps) => {
   return (
     <div className={styles.repoList}>
         {projects.map((project: Project) => {
-        const isChecked = selectedProjects.some(p => p.id === project.id);
+        const selected = selectedProjects.find(p => p.id === project.id);
+        const isChecked = !!selected;
         return (
             <div key={project.id} className={styles.repo}>
             <label>
@@ -23,6 +25,15 @@ const Repositories = ({ projects, selectedProjects, toggleProjectSelection }: Re
                 />
                 <span>{project.name}</span>
             </label>
+            {isChecked && (
+                <input
+                    type="text"
+                    className={styles.branchInput}
+                    value={selected?.selectedBranch ?? project.default_branch}
+                    onChange={(e) => updateProjectBranch(project.id, e.target.value)}
+                    placeholder="branch"
+                />
+            )}
             </div>
         );
         })}
